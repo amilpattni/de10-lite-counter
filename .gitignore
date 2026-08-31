@@ -1,0 +1,19 @@
+# Verilator
+obj_dir/
+build/
+*.vcd
+*.fst
+
+# Quartus generated files
+db/
+incremental_db/
+output_files/
+simulation/
+*.qws
+*.sof
+*.pof
+
+# ModelSim
+work/
+transcript
+vsim.wlf
