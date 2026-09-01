@@ -16,6 +16,7 @@ lint:
 	$(VERILATOR) --lint-only $(RTL_DIR)/counter.sv
 	$(VERILATOR) --lint-only $(RTL_DIR)/seven_segment_decoder.sv
 	$(VERILATOR) --lint-only --top-module counter_system $(RTL_DIR)/tick_generator.sv $(RTL_DIR)/counter.sv $(RTL_DIR)/seven_segment_decoder.sv $(RTL_DIR)/counter_system.sv
+	$(VERILATOR) --lint-only --top-module de10_lite_top $(RTL_DIR)/tick_generator.sv $(RTL_DIR)/counter.sv $(RTL_DIR)/seven_segment_decoder.sv $(RTL_DIR)/counter_system.sv $(RTL_DIR)/de10_lite_top.sv
 
 test-tick:
 	mkdir -p $(BUILD_DIR)/tick_generator
