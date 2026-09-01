@@ -5,14 +5,17 @@ RTL_DIR := $(ROOT_DIR)/rtl
 SIM_DIR := $(ROOT_DIR)/sim
 BUILD_DIR := $(ROOT_DIR)/build
 
-.PHONY: lint test test-tick test-counter test-decoder
+.DEFAULT_GOAL := test
+
+.PHONY: lint test test-tick test-counter test-decoder test-system
+
+test: lint test-tick test-counter test-decoder test-system
 
 lint:
 	$(VERILATOR) --lint-only $(RTL_DIR)/tick_generator.sv
 	$(VERILATOR) --lint-only $(RTL_DIR)/counter.sv
 	$(VERILATOR) --lint-only $(RTL_DIR)/seven_segment_decoder.sv
-
-test: lint test-tick test-counter test-decoder
+	$(VERILATOR) --lint-only --top-module counter_system $(RTL_DIR)/tick_generator.sv $(RTL_DIR)/counter.sv $(RTL_DIR)/seven_segment_decoder.sv $(RTL_DIR)/counter_system.sv
 
 test-tick:
 	mkdir -p $(BUILD_DIR)/tick_generator
@@ -28,3 +31,8 @@ test-decoder:
 	mkdir -p $(BUILD_DIR)/seven_segment_decoder
 	$(VERILATOR) --cc --exe --build --Mdir $(BUILD_DIR)/seven_segment_decoder --top-module seven_segment_decoder $(RTL_DIR)/seven_segment_decoder.sv $(SIM_DIR)/seven_segment_decoder_tb.cpp
 	$(BUILD_DIR)/seven_segment_decoder/Vseven_segment_decoder
+
+test-system:
+	mkdir -p $(BUILD_DIR)/counter_system
+	$(VERILATOR) --cc --exe --build --Mdir $(BUILD_DIR)/counter_system --top-module counter_system -GCYCLES_PER_TICK=4 $(RTL_DIR)/tick_generator.sv $(RTL_DIR)/counter.sv $(RTL_DIR)/seven_segment_decoder.sv $(RTL_DIR)/counter_system.sv $(SIM_DIR)/counter_system_tb.cpp
+	$(BUILD_DIR)/counter_system/Vcounter_system
