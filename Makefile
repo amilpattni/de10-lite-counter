@@ -76,4 +76,5 @@ test-system:
 	mkdir -p $(BUILD_DIR)/counter_system
 	$(VERILATOR) --cc --exe --build --Mdir $(BUILD_DIR)/counter_system --top-module counter_system -GCYCLES_PER_TICK=4 $(SYSTEM_RTL) $(SIM_DIR)/counter_system_tb.cpp
 	$(BUILD_DIR)/counter_system/Vcounter_system
+
 	
